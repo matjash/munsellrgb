@@ -38,7 +38,7 @@ from qgis.core import (QgsProcessing,
                        QgsProcessingParameterFeatureSink)
 
 
-class RtMunsellRgbAlgorithm(QgsProcessingAlgorithm):
+class MrtMunsellRgbAlgorithm(QgsProcessingAlgorithm):
     """
     This is an example algorithm that takes a vector layer and
     creates a new identical one.
@@ -142,4 +142,4 @@ class RtMunsellRgbAlgorithm(QgsProcessingAlgorithm):
         return QCoreApplication.translate('Processing', string)
 
     def createInstance(self):
-        return RtMunsellRgbAlgorithm()
+        return MrtMunsellRgbAlgorithm()
