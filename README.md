@@ -1,2 +1,2 @@
-# rt_munsell
-Random tools - MunsellRGB
+# mrt_munsell
+MunsellRGB
