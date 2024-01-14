@@ -63,7 +63,7 @@ class RtMunsellRgbProvider(QgsProcessingProvider):
         string should be a unique, short, character only string, eg "qgis" or
         "gdal". This string should not be localised.
         """
-        return 'random_tools'
+        return 'mrt'
 
     def name(self):
         """
@@ -72,7 +72,7 @@ class RtMunsellRgbProvider(QgsProcessingProvider):
 
         This string should be short (e.g. "Lastools") and localised.
         """
-        return self.tr('Random tools')
+        return self.tr('mrt')
 
     def icon(self):
         """
