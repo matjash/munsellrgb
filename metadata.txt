@@ -6,7 +6,7 @@
 name=MunsellRGB
 qgisMinimumVersion=3.0
 description=This plugin converts Munsell color system code into RBG value.
-version=0.1
+version=1.0
 author=Matjaž Mori
 email=matjaz.mori@gmail.com
 

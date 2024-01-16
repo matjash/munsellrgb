@@ -34,6 +34,7 @@ from qgis.PyQt.QtCore import QCoreApplication, QVariant
 
 from qgis.core import (QgsProcessing,
                        QgsFeatureSink,
+                       edit,
                        QgsProcessingAlgorithm,
                        QgsProcessingParameterFeatureSource,
                        QgsProcessingParameterField,
@@ -52,6 +53,7 @@ try:
 except:
     subprocess.check_call(['python', '-m', 'pip', 'install', 'colour-science'])
     colour
+    from colour.models import RGB_COLOURSPACE_sRGB
 
 
 
@@ -121,156 +123,47 @@ class RtMunsellRgbAlgorithm(QgsProcessingAlgorithm):
 
 
 
-
         def munsell2rgb(input_value):
-            feedback.pushInfo(self.tr('Converting munsell to RGB'))
-            feedback.pushInfo(self.tr(feature.id())
-            field_name = input_field + '_to rgb'
+            pattern = r'^(\d+(?:\.\d+)?)([a-zA-Z]+)\s*(\d+)/(\d+)$'
+            match = re.match(pattern, input_value)
+            hue, prefix, value, chroma = match.groups()
+            muns_input = str(hue) + prefix + ' ' + str(value) + '/' + str(chroma)
+
+            xyY = colour.munsell_colour_to_xyY(muns_input)
+            XYZ = colour.xyY_to_XYZ(xyY)  
+
+            rgb = colour.XYZ_to_sRGB(XYZ)
+            rgb = [max(0, min(1, v)) for v in rgb]
+            rgb_255 = [round(v * 255) for v in rgb]
+            value = ", ".join(str(e) for e in rgb_255)
+
+            field_name = input_field + '_to rgb'           
             if field_name not in [field.name() for field in layer.fields()]:
                 new_field = QgsField(field_name, QVariant.String) 
                 layer.dataProvider().addAttributes([new_field])
                 layer.updateFields()
-            converted_code = feature.id()
+
+
             field_idx = layer.fields().indexOf(field_name)
-            layer.dataProvider().changeAttributeValue(feature.id(), field_idx, converted_code)
+            layer.changeAttributeValue(feature.id(), field_idx, value)
+         
 
+        total = 100.0 / layer.featureCount() if layer.featureCount() else 0
+        features = layer.getFeatures()
 
-
-        def rgb2munsell(input_value):
-            feedback.pushInfo(self.tr('Converting RGB to Munsell:'))
-            feedback.pushInfo(self.tr(feature.id())
-            field_name = input_field + '_to munsell'
-            if field_name not in [field.name() for field in layer.fields()]:
-                new_field = QgsField(field_name, QVariant.String) 
-                layer.dataProvider().addAttributes([new_field])
-                layer.updateFields()
-            converted_code = feature.id()
-            field_idx = layer.fields().indexOf(field_name)
-            layer.dataProvider().changeAttributeValue(feature.id(), field_idx, converted_code)
-        
-
-        for feature in layer.getFeatures():
-            input_value = feature[input_field]
-            # create a list of code parts
-            input_value = re.split(r'(\d+(\.\d+)?)', input_value)
-            # Filter to keep only numeric or alphabetic elements
-            filtered_input = [item.strip() for item in input_value if item is not None and (item.replace('.', '', 1).isdigit() or item.strip().isalpha())]
-
-            #is it RGB
-            if all(elem.replace('.', '', 1).isdigit() for elem in filtered_input) and len(filtered_input) == 3:
-                rgb2munsell(filtered_input)
-
-            #is it munsell
-            elif len(filtered_input) == 4 and filtered_input[0].replace('.', '', 1).isdigit() and \
-                filtered_input[1].isalpha() and filtered_input[2].isdigit() and filtered_input[3].isdigit():
-                munsell2rgb(filtered_input)
-
-            else: 
-                feedback.pushInfo(self.tr('No valid RGB or Munsell code detected:'))
-                feedback.pushInfo(self.tr(feature.id())
-
-
-   
-
-
-            
-        """
-        layer.startEditing()
-
-        # Step 2: Start Editing the Layer
-        layer.startEditing()
-
-        # Step 3: Add the New Field
-        layer.dataProvider().addAttributes([QgsField(new_field_name, QVariant.Int)])
-        layer.updateFields()
-
-        # Step 4: Calculate and Update Values
-        for feature in layer.getFeatures():
-            source_value = feature[source_field_name]
-            new_value = source_value * 3
-            layer.changeAttributeValue(feature.id(), layer.fields().indexOf(new_field_name), new_value)
-
-        # Step 5: Commit Changes
-        layer.commitChanges()
-
-
-
-
-
-        for feature in layer.getFeatures():
-            muns = feature[4]
-            if muns != NULL and muns != '':
-                muns = re.sub(r"[\n\t\s]*", "", muns)
-                match = re.split(r'(\d+)', muns)
-                print(match)
-                
-                if len(match) == 9:
-                    hue = float(match[1] + '.' + match[3])
-                    pref = match[4]
-                    value = float(match[5])
-                    chroma = float(match[7])
-        
-                else:
-                    hue = float(match[1])
-                    pref = match[2]
-                    value = float(match[3])
-                    chroma = float(match[5])
-                    
-                muns_input = str(hue) + pref + ' ' + str(value) + '/' + str(chroma)
-                print(muns_input)
-
-                x = colour.munsell_colour_to_xyY(muns_input)
-                C = colour.ILLUMINANTS['CIE 1931 2 Degree Standard Observer']['C']
-                x = colour.xyY_to_XYZ(x)
-                rgb = colour.XYZ_to_sRGB(x, C)
-                print(rgb)
-                rgb = rgb *255
-                rgb = [round(x) for x in rgb]
-                value = ", ".join(str(e) for e in rgb)
-
-
-                
-                print(value)
-                layer.changeAttributeValue(feature.id(),5, value)
-
-        layer.commitChanges() 
-
-            
-
-
-
-
-
-        # Retrieve the feature source and sink. The 'dest_id' variable is used
-        # to uniquely identify the feature sink, and must be included in the
-        # dictionary returned by the processAlgorithm function.
-        source = self.parameterAsSource(parameters, self.INPUT, context)
-        (sink, dest_id) = self.parameterAsSink(parameters, self.OUTPUT,
-                context, source.fields(), source.wkbType(), source.sourceCrs())
-
-        # Compute the number of steps to display within the progress bar and
-        # get features from source
-        total = 100.0 / source.featureCount() if source.featureCount() else 0
-        features = source.getFeatures()
-
-        for current, feature in enumerate(features):
-            # Stop the algorithm if cancel button has been clicked
-            if feedback.isCanceled():
-                break
-
-            # Add a feature in the sink
-            sink.addFeature(feature, QgsFeatureSink.FastInsert)
-
-            # Update the progress bar
-            feedback.setProgress(int(current * total))
-
-        # Return the results of the algorithm. In this case our only result is
-        # the feature sink which contains the processed features, but some
-        # algorithms may return multiple feature sinks, calculated numeric
-        # statistics, etc. These should all be included in the returned
-        # dictionary, with keys matching the feature corresponding parameter
-        # or output names.
-        """
+        with edit(layer):
+            for current, feature in enumerate(layer.getFeatures()):
+                input_value = feature[input_field]
+                if input_value:
+                    input_value = input_value.strip()
+                    if re.match(r'^\d+(\.\d+)?[a-zA-Z]+\s*\d+/\d+$', input_value):
+                        munsell2rgb(input_value)
+                    else: 
+                        feedback.pushInfo(self.tr('No valid Munsell code detected:'))
+                        feedback.pushInfo(str(input_value))
+                if feedback.isCanceled():
+                    break
+                feedback.setProgress(int(current * total))
         return {}
         
 
@@ -296,3 +189,14 @@ class RtMunsellRgbAlgorithm(QgsProcessingAlgorithm):
 
     def createInstance(self):
         return RtMunsellRgbAlgorithm()
+    
+    def shortHelpString(self):
+        string = """Tool accepts field with munsell codes and converts them into sRGB values. 
+        Iz creates new column with suffix \"_to rgb\". If the field already exists, it will rewrite it!
+
+        Conversion is made using Colour, an open-source Python package:
+        https://colour.readthedocs.io/en/develop/index.html#
+        
+        
+        """
+        return self.tr(string)
