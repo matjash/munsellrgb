@@ -10,7 +10,7 @@ version=1.0
 author=Matjaž Mori
 email=matjaz.mori@gmail.com
 
-about=This proccessing plugin converts Munsell color system code into sRBG value and vice versa. Among other aplications, sRBG value can be used to set layer symbol colors. 
+about=This proccessing plugin converts Munsell color system code into sRBG value. Among other aplications, sRBG value can be used to set layer symbol colors. 
 
 tracker=https://github.com/matjash/munsellrgb/issues
 repository=https://github.com/matjash/munsellrgb
