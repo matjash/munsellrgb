@@ -5,12 +5,16 @@
 [general]
 name=MunsellRGB
 qgisMinimumVersion=3.1
-description=This plugin converts Munsell color system code into sRBG value.
+description=Munsell code to sRBG conversion.
 version=1.0
 author=Matjaž Mori
 email=matjaz.mori@gmail.com
 
-about=This proccessing plugin converts Munsell color system code into sRBG value. Among other aplications, sRBG value can be used to set layer symbol colors. 
+about=This proccessing tool converts Munsell color system code into sRBG value.
+      munsellrgb can be found in rat proccesing provider. 
+      
+      Among other aplications, sRBG value can be used to set layer symbol colors.
+
 
 tracker=https://github.com/matjash/munsellrgb/issues
 repository=https://github.com/matjash/munsellrgb
@@ -23,7 +27,7 @@ hasProcessingProvider=yes
 # changelog=
 
 # Tags are comma separated with spaces allowed
-tags=python qgis munsell rgb archaeology soil
+tags=python qgis munsell rgb archaeology soil rat
 
 homepage=https://github.com/matjash/munsellrgb
 category=Analysis
