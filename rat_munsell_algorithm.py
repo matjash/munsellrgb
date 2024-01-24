@@ -117,7 +117,7 @@ class RatMunsellRgbAlgorithm(QgsProcessingAlgorithm):
                     input_value = input_value.strip()
                     if re.match(r'^\d+(\.\d+)?[a-zA-Z]+\s*\d+/\d+$', input_value):
                         munsell2rgb(input_value,field_name)
-                        feedback.pushInfo(f"Valid Munsell or RGB code detected for feature {feature_id}: {input_value}")
+                        feedback.pushInfo(f"Valid Munsell code detected for feature {feature_id}: {input_value}")
                     else: 
                         feedback.reportError(f"No valid Munsell code detected for feature {feature_id}: {input_value}")
                 if feedback.isCanceled():
