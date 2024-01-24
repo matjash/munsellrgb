@@ -31,10 +31,10 @@ __copyright__ = '(C) 2022 by Matjaž Mori'
 __revision__ = '$Format:%H$'
 
 from qgis.core import QgsProcessingProvider
-from .rt_munsell_algorithm import RtMunsellRgbAlgorithm
+from .rat_munsell_algorithm import RatMunsellRgbAlgorithm
 
 
-class RtMunsellRgbProvider(QgsProcessingProvider):
+class RatMunsellRgbProvider(QgsProcessingProvider):
 
     def __init__(self):
         """
@@ -53,7 +53,7 @@ class RtMunsellRgbProvider(QgsProcessingProvider):
         """
         Loads all algorithms belonging to this provider.
         """
-        self.addAlgorithm(RtMunsellRgbAlgorithm())
+        self.addAlgorithm(RatMunsellRgbAlgorithm())
         # add additional algorithms here
         # self.addAlgorithm(MyOtherAlgorithm())
 
@@ -63,7 +63,7 @@ class RtMunsellRgbProvider(QgsProcessingProvider):
         string should be a unique, short, character only string, eg "qgis" or
         "gdal". This string should not be localised.
         """
-        return 'mrt'
+        return 'rat'
 
     def name(self):
         """
@@ -72,7 +72,7 @@ class RtMunsellRgbProvider(QgsProcessingProvider):
 
         This string should be short (e.g. "Lastools") and localised.
         """
-        return self.tr('mrt')
+        return self.tr('rat')
 
     def icon(self):
         """

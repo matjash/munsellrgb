@@ -1,2 +1,2 @@
-# mrt_munsell
+# rat_munsell
 MunsellRGB
