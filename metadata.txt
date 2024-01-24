@@ -12,9 +12,6 @@ email=matjaz.mori@gmail.com
 
 about=This proccessing tool converts Munsell color system code into sRBG value.
       munsellrgb can be found in rat proccesing provider. 
-      
-      Among other aplications, sRBG value can be used to set layer symbol colors.
-
 
 tracker=https://github.com/matjash/munsellrgb/issues
 repository=https://github.com/matjash/munsellrgb
@@ -24,7 +21,7 @@ repository=https://github.com/matjash/munsellrgb
 
 hasProcessingProvider=yes
 # Uncomment the following line and add your changelog:
-# changelog=
+# changelog=v1.0 First release
 
 # Tags are comma separated with spaces allowed
 tags=python qgis munsell rgb archaeology soil rat
