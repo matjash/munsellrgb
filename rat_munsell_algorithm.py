@@ -150,7 +150,7 @@ class RatMunsellRgbAlgorithm(QgsProcessingAlgorithm):
         return RatMunsellRgbAlgorithm()
     
     def shortHelpString(self):
-        string = """Tool accepts field with munsell codes converts them to sRGB. It is space and case insensitive.
+        string = """This tool accepts field with munsell codes, converts them into sRGB. It is space and case insensitive.
         Iz creates new column named srgb, if it exists already, it will rewrite it.
 
         Conversion is made using Colour, an open-source Python package:
