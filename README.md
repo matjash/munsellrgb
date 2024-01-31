@@ -21,5 +21,7 @@ RGB values can be utilized not only in QGIS but also in any graphical program to
 <img src="https://github.com/matjash/munsellrgb/assets/32578708/650138bd-273f-4876-b47c-478e58153528" alt="profile" width="900"><br />
 Example of fictional archaeological cross section, using common munsell soil color codes
  
+<br />
+<br />
 
-
+[<img width="241" src="https://github.com/matjash/munsellrgb/assets/32578708/134255d1-0be2-44df-bf47-33558fcf343c">](https://ko-fi.com/matjash)
